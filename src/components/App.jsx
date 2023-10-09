@@ -1,16 +1,13 @@
+import React from 'react';
+
+import TodoList from './TodoList/TodoList';
+import { GlobalStyle } from 'utils/GlobalStyles';
+
 export const App = () => {
   return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
-      React homework template
+    <div>
+      <TodoList />
+      <GlobalStyle />
     </div>
   );
 };
