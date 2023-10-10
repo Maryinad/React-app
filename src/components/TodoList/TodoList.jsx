@@ -13,12 +13,16 @@ const TodoList = () => {
   const [todoList, setTodoList] = useState([]);
 
   const addNewTodoData = () => {
-    if (todoData.trim() !== '') {
-      const todoExist = todoList.some(todo => todo.text === todoData);
+    const trimmedTodoData = todoData.trim();
+    if (trimmedTodoData !== '') {
+      const todoExist = todoList.some(
+        todo => todo.text.trim() === trimmedTodoData
+      );
       if (!todoExist) {
         const newTodo = {
           id: nanoid(),
           text: todoData,
+          checked: false,
         };
         setTodoList([...todoList, newTodo]);
         setTodoData('');
@@ -31,6 +35,24 @@ const TodoList = () => {
   const deleteTodoItem = todoId => {
     setTodoList(todoList.filter(todo => todo.id !== todoId));
   };
+
+  // const changeTodoItem = todoId => {};
+
+  const handleChangeChecked = (todoId, checked) => {
+    const updatedTodoList = todoList.map(todo => {
+      if (todo.id === todoId) {
+        return {
+          ...todo,
+          checked: checked,
+        };
+      }
+      return todo;
+    });
+
+    setTodoList(updatedTodoList);
+  };
+
+  const uncheckedCount = todoList.filter(todo => !todo.checked).length;
 
   return (
     <div className={css.container}>
@@ -51,9 +73,15 @@ const TodoList = () => {
       </div>
       <div>
         {todoList.map(todo => (
-          <TodoListItem todo={todo} deleteTodoItem={deleteTodoItem} />
+          <TodoListItem
+            key={todo.id}
+            todo={todo}
+            deleteTodoItem={deleteTodoItem}
+            onChange={handleChangeChecked}
+          />
         ))}
-        <p className={css.quantity}>You have {todoList.length}</p>
+        <p className={css.quantity}>You have {todoList.length} todos</p>
+        <p> You have {uncheckedCount} uncomplited todos</p>
       </div>
     </div>
   );
